@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Keep Clone</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+
+    <header>
+    <h1>Google Keep Clone</h1>
+    <input type="text" id="search_notes" placeholder="search notes..."/>
+    <button id="deleted_notes">Trash</button>
+    <button id="add_new_button">+</button>
+    </header>
+
+    <main>
+        <section id="notes_container"></section> 
+        <!-- is there any difference if i use a div instead of a section? -->
+        
+        <!-- this is a overlay to ask which kind of note u want to create, 
+         doesnt have anything to do with created notes. -->
+        <div id="note_overlay" class="hidden"></div>
+        <div id="note_type" class="hidden">
+            <button id="create_text">Create New Text Note</button>
+            <button id="create_checklist">Create New Checklist</button>
+        </div>
+
+    </main>
+
+    <script type="module" src="../scripts/main.js" defer></script>
+</body>
+</html>
