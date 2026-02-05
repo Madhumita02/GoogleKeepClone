@@ -1,4 +1,7 @@
 import { state } from "./notesData.js";
+import { saveNotes } from "./saveNotes.js";
+import { overlay } from "./htmlElements.js";
+import { renderNotes } from "./rendernotesui.js";
 
 export function handleNoteClick(e){
     const noteClicked = e.target.closest(".note_card");
@@ -7,19 +10,114 @@ export function handleNoteClick(e){
     console.log(noteClicked.className);
     const noteId = noteClicked.dataset.id;
 
-    editNote(noteId)
+    openEditor(noteId)
 }
 
-function editNote(noteId) {
+let timeoutId;
+let activeNote;
+let inputs;
 
-    const noteClicked =  document.querySelector(`.note_card[data-id="${noteId}"]`);
-    // so only if u put backticks on the outermost quotes it will
-    // read it as such if you put "" or '' as the outermost and you 
-    // wont get the value of noteId but it will take it as data-id="${noteId}" where?
+export function openEditor(noteId) {
 
-    const overlay = document.getElementById("note_overlay")
+    const note = state.notes.find(n => n.id === Number(noteId));
+    if (!note) return; //if the id isnt found etc and if its undefined
+
+    note.isEditing = true;   
+    saveNotes();
+
+    activeNote = note;
+
+    const overlay = document.getElementById("note_overlay");
+    const modal = document.getElementById("edit_note_modal");
+
+    modal.innerHTML = ""; //incase anythign is there from previous edits
+
+    if (note.type === "text") {
+        renderTextEditor(note);
+    } else if (note.type === "checklist") {
+        renderChecklistEditor(note);
+    }
 
     overlay.classList.remove("hidden");
-    noteClicked.classList.add("note_card--expanded");  
+    modal.classList.remove("hidden");
 
+}
+
+export function renderTextEditor(note) {
+    const modal = document.getElementById("edit_note_modal");
+
+    modal.innerHTML = `
+        <input class="edit_title" value="${note.title}" placeholder="Title" />
+        <input class="edit_description" value="${note.description}" placeholder="Description" />
+        <textarea class="edit_content">${note.content}</textarea>
+    `;
+
+    const title = modal.querySelector(".edit_title");
+    const description = modal.querySelector(".edit_description");
+    const content = modal.querySelector(".edit_content");
+
+    inputs = { title, description, content };
+
+    noteEdits(note);
+}
+
+function noteEdits(note) {
+    const editNote = document.getElementById("edit_note_modal");
+
+    const title = editNote.querySelector(".edit_title");
+    const description = editNote.querySelector(".edit_description");
+    const content = editNote.querySelector(".edit_content");
+
+
+    function autoSave() {
+        if(timeoutId)
+        clearTimeout(timeoutId);
+
+        timeoutId = setTimeout(()=> {
+            activeNote.title = title.value;
+            activeNote.description = description.value;
+            activeNote.content = content.value;
+
+            saveNotes();
+
+        }, 500)
+    }
+
+    title.addEventListener("input", autoSave);
+    description.addEventListener("input", autoSave);
+    content.addEventListener("input", autoSave);
+}
+
+export function finalSaveAndCleanUp() {
+    
+    if(!activeNote || !inputs) return;
+    if(activeNote.type === "checklist") return;
+
+    clearTimeout(timeoutId);
+
+    const t = inputs.title.value.trim();
+    const d = inputs.description.value.trim();
+    const c = inputs.content.value.trim();
+
+    activeNote.isEditing = false;
+
+    if(!t && !d && !c) {
+        state.notes = state.notes.filter(n => n.id !== activeNote.id);
+    } else {
+        activeNote.title = t;
+        activeNote.description = d;
+        activeNote.content = c;
+    }
+
+    saveNotes();
+    renderNotes();   
+
+    activeNote = null;
+    inputs = null;
+    timeoutId = null;
+}
+
+export function renderChecklistEditor(note) {
+    alert("yet to work on!");
+    
 }

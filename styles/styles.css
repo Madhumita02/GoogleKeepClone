@@ -142,9 +142,57 @@ textarea {
     color: rgb(247, 233, 215);
 }
 
-.note_card--expanded{
-  position: fixed;
-  inset: 10%;
-  z-index: 9999;
+
+.hidden {
+  display: none;
+}
+
+/* Kill empty white box */
+#edit_note_modal:empty {
+  display: none;
+}
+
+#edit_note_modal {
+  width: 320px;
+  padding: 12px;
+
   background: white;
+  border: 1px solid #ccc;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  box-sizing: border-box;
+}
+
+/* Inputs */
+#edit_note_modal input {
+  padding: 6px;
+  font-size: 14px;
+
+  border: none;
+  border-bottom: 1px solid #ccc;
+
+  box-sizing: border-box;
+}
+
+/* Textarea */
+#edit_note_modal textarea {
+  padding: 6px;
+  font-size: 14px;
+
+  min-height: 120px;
+
+  border: none;
+  resize: none;
+
+  box-sizing: border-box;
+}
+
+/* Focus */
+#edit_note_modal input:focus,
+#edit_note_modal textarea:focus {
+  outline: none;
+  border-bottom: 1px solid #000;
 }

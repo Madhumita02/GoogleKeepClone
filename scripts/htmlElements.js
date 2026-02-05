@@ -5,5 +5,6 @@ export const notesContainer = document.getElementById("notes_container")
 export const overlay = document.getElementById("note_overlay");
 export const createTxt = document.getElementById("create_text");
 export const noteType = document.getElementById("note_type");
+export const editNoteModal = document.getElementById("edit_note_modal");
 export const createCheckList = document.getElementById("create_checklist");
 // is using querySelector here better by any means?

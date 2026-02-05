@@ -1,5 +1,7 @@
+import { openEditor } from "./editNote.js";
+import { saveNotes } from "./saveNotes.js";
 import { state } from "./notesData.js";
-import { new_checkbox, new_note } from "./renderNotesUi.js";
+import { new_note, new_checkbox } from "./rendernotesui.js";
 
 export function createNote(type) {
   const timestamp = Date.now();
@@ -14,17 +16,14 @@ export function createNote(type) {
     content: "",
     isPinned: false,
     isDeleted: false,
+    isEditing: true,
     createdAt: timestamp,
     modifiedAt: timestamp
   };
 
   state.notes.push(note);
-
-  if (type === "text") {
-    new_note(note);
-  } else if (type === "checklist") {
-    new_checkbox(note);
-  }
+  saveNotes();
+  openEditor(note.id);
 }
 
 export function getNoteOrder(){
