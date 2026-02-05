@@ -1,16 +1,43 @@
 import { state } from "./notesData.js";
 import { saveNotes } from "./saveNotes.js";
-import { overlay } from "./htmlElements.js";
 import { renderNotes } from "./rendernotesui.js";
+import { TemporaryDeleteNote, restoreNote, requestPermanentDelete } from "./deletedNotes.js";
+import { isTrash } from "./htmlElements.js";
 
 export function handleNoteClick(e){
     const noteClicked = e.target.closest(".note_card");
     if(!noteClicked ) return;
 
-    console.log(noteClicked.className);
     const noteId = noteClicked.dataset.id;
 
-    openEditor(noteId)
+    if (e.target.closest(".delete_note")) {
+        console.log("they clciked dlete");
+        e.stopPropagation();
+        TemporaryDeleteNote(noteId);
+        saveNotes();
+        renderNotes();
+        return;
+    }
+
+    if (e.target.closest(".restore_note")) {
+        e.stopPropagation();
+        restoreNote(noteId);
+        saveNotes();
+        renderNotes();
+        return;
+    }
+
+    if (e.target.closest(".permanent_delete_note")) {
+        e.stopPropagation();
+        requestPermanentDelete(noteId);
+        return;
+    }
+
+    if (e.target.closest(".drag_handle")) return;
+
+    if(!isTrash.isTrash){
+        openEditor(noteId) 
+    }
 }
 
 let timeoutId;

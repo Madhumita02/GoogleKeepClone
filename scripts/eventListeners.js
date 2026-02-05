@@ -1,12 +1,31 @@
-import { editNoteModal, trash, addNewButton, overlay, notesContainer, createTxt, createCheckList, noteType } from "./htmlElements.js";
+import { editNoteModal,recycleBinHeading, toggleTrash, addNewButton, overlay, notesContainer, createTxt, createCheckList, noteType } from "./htmlElements.js";
 import { handleNoteClick, finalSaveAndCleanUp } from "./editNote.js";
 import { createNote } from "./createNewNotesArray.js";
+import { isTrash } from "./htmlElements.js";
+import { renderNotes } from "./rendernotesui.js";
 
 export function eventListeners() {
 
-    console.log(trash, addNewButton, overlay, noteType);
+    console.log(toggleTrash, addNewButton, overlay, noteType);
 
-    trash.addEventListener("click", () => {alert("Yet to work on")});
+    toggleTrash.addEventListener("click", (e) => {
+        isTrash.isTrash = !isTrash.isTrash;
+
+        if(isTrash.isTrash) {
+            toggleTrash.textContent = "Home Page";
+            addNewButton.disabled = true;
+            addNewButton.classList.add("disabled");
+            recycleBinHeading.classList.remove("hidden");
+        } else {
+            toggleTrash.textContent = "Trash";
+            addNewButton.disabled = false;
+            addNewButton.classList.remove("disabled");
+            recycleBinHeading.classList.add("hidden");
+        }
+
+        renderNotes();
+
+    });
 
     addNewButton.addEventListener("click", () => {
         overlay.classList.remove("hidden");

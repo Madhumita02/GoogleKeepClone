@@ -1,6 +1,7 @@
 import {  notesContainer } from "./htmlElements.js";
 import { state } from "./notesData.js";
 import { saveNotes } from "./saveNotes.js";
+import { isTrash } from "./htmlElements.js";
 
 export function new_checkbox() {
     // const noteCard = document.createElement("div");
@@ -20,8 +21,18 @@ export function new_note(note){
     // remember u cant write multi line stuff with "" and ''
     noteCard.innerHTML = `
     <div class="note_header">
+        ${isTrash.isTrash ?
+            `
+            <button class="restore_note">Restore</button>
+            <button class="permanent_delete_note">Delete Forever</button>
+            `
+            :
+            `
             <span class="drag_handle" draggable="true">⋮⋮</span>
-        </div>
+            <button class="delete_note">Delete</button>
+            `
+        }     
+    </div>
 
     <input type="text" class="note_title" placeholder="Title" readonly/>
         <input type="text" class="note_description" placeholder="Description" readonly/>
@@ -36,24 +47,55 @@ export function new_note(note){
 }
 
 export function renderNotes() {
+
+    const main = document.querySelector("main");
     
     notesContainer.innerHTML="";
 
-    cleanNotes();
-    sortNotes();
+    if(!isTrash.isTrash){
+        cleanNotes();
+        sortNotes();
+    }
 
-    for(let note of state.notes) {
+    // if (isTrash.isTrash) {
+    //     const heading = document.createElement("h2");
+    //     heading.textContent = "Recycle Bin";
+    //     main.prepend(heading);
+    // }
 
-        if(note.type === "checklist") {
-            console.log("Yet to work on checklist rendering");
-            continue;
+    if(!isTrash.isTrash) {
+
+        for(let note of state.notes) {
+
+            if(note.type === "checklist") {
+                console.log("Yet to work on checklist rendering");
+                continue;
+            }
+
+            if(note.isDeleted) continue;
+
+            new_note(note);
+
         }
 
-        new_note(note);
+    } else {
+
+                for(let note of state.notes) {
+
+            if(note.type === "checklist") {
+                console.log("Yet to work on checklist rendering");
+                continue;
+            }
+
+            if(!note.isDeleted) continue;
+
+            new_note(note);
+
+        }
 
     }
 
-
+    // console.log("rendered notes.");
 }
 
 function cleanNotes() {

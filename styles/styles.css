@@ -56,6 +56,11 @@ header button{
     border: none;
 }
 
+header button.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
 header button:hover{
     background-color: #c9c5ff9f;
     color:  black;
@@ -195,4 +200,41 @@ textarea {
 #edit_note_modal textarea:focus {
   outline: none;
   border-bottom: 1px solid #000;
+}
+
+
+
+
+
+.note_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.drag_handle {
+    cursor: grab;
+}
+
+.delete_note,
+.restore_note,
+.permanent_delete_note {
+    background: none;
+    border: none;
+    font-size: 16px;
+    opacity: 0.8;
+    padding: 6px;
+}
+
+
+
+.delete_note:hover,
+.restore_note:hover,
+.permanent_delete_note:hover{
+    background-color: #1f0000b6;
+    color:  rgb(255, 255, 255);
+}
+
+.heading {
+    margin: 12px;
 }
