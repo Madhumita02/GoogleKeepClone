@@ -1,5 +1,6 @@
 export const toggleTrash = document.getElementById("toggle_trash");
 export const recycleBinHeading = document.getElementById("recycle_bin_heading");
+export const searchNotes = document.getElementById("search_notes");
 
 export const addNewButton = document.getElementById("add_new_button");
 export const notesContainer = document.getElementById("notes_container")

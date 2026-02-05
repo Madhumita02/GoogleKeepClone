@@ -1,8 +1,9 @@
-import { editNoteModal,recycleBinHeading, toggleTrash, addNewButton, overlay, notesContainer, createTxt, createCheckList, noteType } from "./htmlElements.js";
+import { editNoteModal, searchNotes, recycleBinHeading, toggleTrash, addNewButton, overlay, notesContainer, createTxt, createCheckList, noteType } from "./htmlElements.js";
 import { handleNoteClick, finalSaveAndCleanUp } from "./editNote.js";
 import { createNote } from "./createNewNotesArray.js";
 import { isTrash } from "./htmlElements.js";
 import { renderNotes } from "./rendernotesui.js";
+import { filterSearchNotes } from "./searchNotes.js";
 
 export function eventListeners() {
 
@@ -68,5 +69,8 @@ export function eventListeners() {
 
     notesContainer.addEventListener("click", handleNoteClick);
 
+    searchNotes.addEventListener("input", (e) =>{
+         filterSearchNotes(e.target.value);
+    });
 
 }
