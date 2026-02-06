@@ -28,8 +28,11 @@ export function new_note(note){
             `
             :
             `
-            <span class="drag_handle" draggable="true">⋮⋮</span>
-            <button class="delete_note">Delete</button>
+            <span class="drag_handle" >⋮⋮</span>
+            <div class="note_actions">
+                <button class="pin_note ${note.isPinned ? "pinned" : ""}">📌</button>
+                <button class="delete_note">Delete</button>
+            </div>
             `
         }     
     </div>
@@ -38,6 +41,7 @@ export function new_note(note){
         <input type="text" class="note_description" placeholder="Description" readonly/>
         <textarea class="note_content" placeholder="Write your note here..." readonly></textarea>
     `
+    noteCard.draggable = !note.isPinned && !isTrash.isTrash;
 
     noteCard.querySelector(".note_title").value = note.title;
     noteCard.querySelector(".note_description").value = note.description;

@@ -1,11 +1,17 @@
 import { editNoteModal, searchNotes, recycleBinHeading, toggleTrash, addNewButton, overlay, notesContainer, createTxt, createCheckList, noteType } from "./htmlElements.js";
-import { handleNoteClick, finalSaveAndCleanUp } from "./editNote.js";
+import { finalSaveAndCleanUp } from "./editNote.js";
 import { createNote } from "./createNewNotesArray.js";
 import { isTrash } from "./htmlElements.js";
 import { renderNotes } from "./rendernotesui.js";
+import { saveNotes } from "./saveNotes.js";
 import { filterSearchNotes } from "./searchNotes.js";
+import { state } from "./notesData.js";
+import { handleNoteClick } from "./handleNoteClick.js";
 
 export function eventListeners() {
+
+    
+    let draggedNote = null;
 
     console.log(toggleTrash, addNewButton, overlay, noteType);
 
@@ -69,8 +75,89 @@ export function eventListeners() {
 
     notesContainer.addEventListener("click", handleNoteClick);
 
+    notesContainer.addEventListener("dragstart", (e) => {
+        
+        if(!isTrash.isTrash) {
+            const noteCard = e.target.closest(".note_card");
+            if(!noteCard) return;
+
+            draggedNote = noteCard;
+
+            e.dataTransfer.setData("text/plain", "note");
+
+            noteCard.classList.add("dragging");
+        }
+    })
+
+    notesContainer.addEventListener("dragover", (e)=> {
+        
+        if(!isTrash.isTrash) {
+            e.preventDefault();
+
+            if(!draggedNote) return;
+        }
+
+    })
+
+    notesContainer.addEventListener("dragenter", (e) => {
+
+            if(!isTrash.isTrash) {
+
+            const targetCard = e.target.closest(".note_card");
+            if(!targetCard || targetCard === draggedNote) return;
+
+            const targetNote = state.notes.find(n => n.id === Number(targetCard.dataset.id) );
+
+            if (targetNote?.isPinned) return; 
+
+            const draggedIsJustBefore = (  draggedNote.nextElementSibling === targetCard);
+            
+            if(draggedIsJustBefore) {
+                targetCard.insertAdjacentElement("afterend", draggedNote);
+                //insert the dragged note after the target note as siblings
+            } else {
+                notesContainer.insertBefore(draggedNote, targetCard);
+                //insert the dragged note before targetcard inside the parent class notesContainer
+            }
+        }
+    })
+
+    notesContainer.addEventListener("dragend", (e) => {
+
+        if(!isTrash.isTrash) {
+            const noteCard = e.target.closest(".note_card");
+            if(!noteCard) return;
+
+            draggedNote = null;
+
+            noteCard.classList.remove("dragging");
+
+            const cards = notesContainer.querySelectorAll(".note_card");
+
+            let order = 0;
+
+            for (const card of cards) {
+                const note = state.notes.find(n => n.id === Number(card.dataset.id));
+
+                if (!note) continue;
+                if (note.isPinned) continue; 
+
+                note.order = order++;
+            }
+
+            saveNotes();
+            renderNotes();
+
+        }  
+
+    })
+
     searchNotes.addEventListener("input", (e) =>{
          filterSearchNotes(e.target.value);
+    });
+
+    searchNotes.addEventListener("drop", (e) => {
+    e.preventDefault();
     });
 
 }

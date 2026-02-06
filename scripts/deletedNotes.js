@@ -1,6 +1,7 @@
 import { state } from "./notesData.js";
 import { saveNotes } from "./saveNotes.js";
 import { renderNotes } from "./rendernotesui.js";
+import { getNoteOrder } from "./createNewNotesArray.js";
 
 export function TemporaryDeleteNote(noteId){
     
@@ -10,6 +11,8 @@ export function TemporaryDeleteNote(noteId){
     if(!note) return;
 
     note.isDeleted = true;
+    note.isPinned = false;
+    note.pinOrder = null;
 
 
     console.log("temporarily deleted.");
@@ -25,6 +28,7 @@ export function restoreNote(noteId) {
     if(!note) return;
 
     note.isDeleted = false;
+    note.order = getNoteOrder();
 
     console.log("restored note.");
 
