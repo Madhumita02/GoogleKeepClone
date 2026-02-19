@@ -1,11 +1,12 @@
 import { state } from "./notesData.js";
 import { saveNotes } from "./saveNotes.js";
-import { renderNotes } from "./rendernotesui.js";
+import { renderNotes } from "./renderNotesUi.js";
 import { getNoteOrder } from "./createNewNotesArray.js";
+import { updateNoteOnServer, deleteNoteFromServer } from "./serverSync.js";
 
 export function TemporaryDeleteNote(noteId){
-    
-    const note = state.notes.find(n => n.id === Number(noteId));
+    console.log(noteId)
+    const note = state.notes.find(n => String(n.id) === String(noteId));
 
     console.log(note);
     if(!note) return;
@@ -22,7 +23,7 @@ export function TemporaryDeleteNote(noteId){
 
 export function restoreNote(noteId) {
     
-    const note = state.notes.find(n => n.id === Number(noteId));
+    const note = state.notes.find(n => String(n.id) === String(noteId));
 
     console.log(note);
     if(!note) return;
@@ -42,6 +43,7 @@ export function requestPermanentDelete(noteId) {
 
     permanentlyDeleteNote(noteId);
     saveNotes();
+    deleteNoteFromServer(noteId);
     renderNotes();
 
     console.log("deleted permanently");
@@ -50,7 +52,7 @@ export function requestPermanentDelete(noteId) {
 
 export function permanentlyDeleteNote(noteId) {
 
-    const index = state.notes.findIndex(n => n.id === Number(noteId));
+    const index = state.notes.findIndex(n => String(n.id) === String(noteId));
     if(index === -1) return;
     
     state.notes.splice(index, 1);

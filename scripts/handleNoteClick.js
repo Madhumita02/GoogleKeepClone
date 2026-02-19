@@ -2,9 +2,10 @@
 import { TemporaryDeleteNote, restoreNote, requestPermanentDelete } from "./deletedNotes.js";
 import { isTrash } from "./htmlElements.js";
 import { saveNotes } from "./saveNotes.js";
-import { renderNotes } from "./rendernotesui.js";
+import { renderNotes } from "./renderNotesUi.js";
 import { state } from "./notesData.js";
 import { openEditor } from "./editNote.js";
+import { updateNoteOnServer } from "./serverSync.js";
 
 export function handleNoteClick(e){
     const noteClicked = e.target.closest(".note_card");
@@ -15,7 +16,8 @@ export function handleNoteClick(e){
     if(e.target.closest(".pin_note")) {
         e.stopPropagation();
 
-        const note = state.notes.find(n => n.id === Number(noteId));
+        const note = state.notes.find(n => String(n.id) === String(noteId));
+        console.log("note in pin logic - ",note)
         if(!note) return;
 
         if(!note.isPinned) {
@@ -25,7 +27,7 @@ export function handleNoteClick(e){
         
 
             state.notes.forEach( n => {
-                if(n.isPinned && n.id !== note.id) {
+                if(n.isPinned && String(n.id) !== String(note.id)) {
                     n.pinOrder++;
                 }
             });
@@ -37,30 +39,39 @@ export function handleNoteClick(e){
 
             note.order = 0;
             state.notes.forEach( n => {
-                if(!n.isPinned && n.id !== note.id) {
+                if(!n.isPinned && String(n.id) !== String(note.id)) {
                     n.order++;
                 }
             })
         }
 
         saveNotes();
+        updateNoteOnServer(note);
         renderNotes();
         return;
     }
 
     if (e.target.closest(".delete_note")) {
+
+        const note = state.notes.find(n => String(n.id) === String(noteId));
+
         console.log("they clciked dlete");
         e.stopPropagation();
         TemporaryDeleteNote(noteId);
         saveNotes();
+        updateNoteOnServer(note);
         renderNotes();
         return;
     }
 
     if (e.target.closest(".restore_note")) {
+
+        const note = state.notes.find(n => String(n.id) === String(noteId));
+
         e.stopPropagation();
         restoreNote(noteId);
         saveNotes();
+        updateNoteOnServer(note);
         renderNotes();
         return;
     }

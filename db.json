@@ -1,0 +1,141 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "guest",
+      "password": "guest123"
+    },
+    {
+      "id": "2",
+      "username": "john",
+      "password": "john123"
+    },
+    {
+      "id": "3",
+      "username": "sarah",
+      "password": "sarah123"
+    }
+  ],
+  "notes": [
+    {
+      "id": "101",
+      "userId": 1,
+      "type": "text",
+      "order": 1,
+      "pinOrder": 1,
+      "title": "Welcome Note",
+      "description": "",
+      "content": "This is guest account",
+      "isPinned": true,
+      "isDeleted": false,
+      "isEditing": true,
+      "createdAt": 1700000001,
+      "modifiedAt": 1700000001
+    },
+    {
+      "id": "102",
+      "userId": 1,
+      "type": "text",
+      "order": 2,
+      "pinOrder": null,
+      "title": "Old Note",
+      "description": "",
+      "content": "Deleted one",
+      "isPinned": false,
+      "isDeleted": true,
+      "isEditing": true,
+      "createdAt": 1700000002,
+      "modifiedAt": 1700000002
+    },
+    {
+      "id": "103",
+      "userId": 1,
+      "type": "text",
+      "order": 3,
+      "pinOrder": null,
+      "title": "Shopping List",
+      "description": "Groceries",
+      "content": "Milk\nEggs\nBread\nApples",
+      "isPinned": false,
+      "isDeleted": false,
+      "isEditing": true,
+      "createdAt": 1700000003,
+      "modifiedAt": 1700000003
+    },
+    {
+      "id": "202",
+      "userId": 2,
+      "type": "text",
+      "order": 4,
+      "pinOrder": null,
+      "title": "Meeting Notes",
+      "description": "Bye",
+      "content": "Discuss UI\nSend proposal\nFollow up Monday",
+      "isPinned": false,
+      "isDeleted": false,
+      "isEditing": true,
+      "createdAt": 1700000011,
+      "modifiedAt": 1700000011
+    },
+    {
+      "id": "301",
+      "userId": 3,
+      "type": "text",
+      "order": 1,
+      "pinOrder": null,
+      "title": "Study Plan",
+      "description": "Semester",
+      "content": "Math\nPhysics\nDSA\nDBMS",
+      "isPinned": false,
+      "isDeleted": false,
+      "isEditing": true,
+      "createdAt": 1700000020,
+      "modifiedAt": 1700000020
+    },
+    {
+      "id": "302",
+      "userId": 3,
+      "type": "text",
+      "order": 2,
+      "pinOrder": 1,
+      "title": "Goals",
+      "description": "",
+      "content": "Build portfolio\nLearn React\nApply internships",
+      "isPinned": true,
+      "isDeleted": false,
+      "isEditing": true,
+      "createdAt": 1700000021,
+      "modifiedAt": 1700000021
+    },
+    {
+      "id": "303",
+      "userId": 3,
+      "type": "text",
+      "order": 3,
+      "pinOrder": null,
+      "title": "Temporary Note",
+      "description": "",
+      "content": "This will be deleted later",
+      "isPinned": false,
+      "isDeleted": true,
+      "isEditing": true,
+      "createdAt": 1700000022,
+      "modifiedAt": 1700000022
+    },
+    {
+      "id": "1771488943247",
+      "userId": 2,
+      "type": "text",
+      "order": 6,
+      "pinOrder": null,
+      "title": "new note",
+      "description": "just cheking",
+      "content": "will u update",
+      "isPinned": false,
+      "isDeleted": false,
+      "isEditing": true,
+      "createdAt": "1771488943247",
+      "modifiedAt": "1771488943247"
+    }
+  ]
+}

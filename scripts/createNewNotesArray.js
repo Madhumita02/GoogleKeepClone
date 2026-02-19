@@ -1,13 +1,15 @@
 import { openEditor } from "./editNote.js";
 import { saveNotes } from "./saveNotes.js";
 import { state } from "./notesData.js";
-import { new_note, new_checkbox } from "./rendernotesui.js";
+import { createNoteOnServer } from "./serverSync.js";
 
 export function createNote(type) {
-  const timestamp = Date.now();
+  const timestamp = Date.now().toString();
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
 
   const note = {
     id: timestamp,
+    userId: Number(user.id),
     type: type,
     order: getNoteOrder(),        
     pinOrder: null,
@@ -23,6 +25,7 @@ export function createNote(type) {
 
   state.notes.push(note);
   saveNotes();
+  createNoteOnServer(note);
   openEditor(note.id);
 }
 

@@ -1,7 +1,7 @@
 import { state } from "./notesData.js";
 import { saveNotes } from "./saveNotes.js";
-import { renderNotes } from "./rendernotesui.js";
-import { handleNoteClick } from "./handleNoteClick.js";
+import { renderNotes } from "./renderNotesUi.js";
+import { updateNoteOnServer, deleteNoteFromServer } from "./serverSync.js";
 
 let timeoutId;
 let activeNote;
@@ -9,7 +9,7 @@ let inputs;
 
 export function openEditor(noteId) {
 
-    const note = state.notes.find(n => n.id === Number(noteId));
+    const note = state.notes.find(n => n.id === noteId);
     if (!note) return; //if the id isnt found etc and if its undefined
 
     note.isEditing = true;   
@@ -69,6 +69,7 @@ function noteEdits(note) {
             activeNote.content = content.value;
 
             saveNotes();
+            renderNotes();
 
         }, 500)
     }
@@ -100,6 +101,18 @@ export function finalSaveAndCleanUp() {
     }
 
     saveNotes();
+
+    if(!activeNote.title.trim() 
+        && !activeNote.description.trim() 
+        && !activeNote.content.trim()) {
+
+            deleteNoteFromServer(activeNote.id);
+    }
+     else {
+         updateNoteOnServer(activeNote);
+    }
+
+
     renderNotes();   
 
     activeNote = null;

@@ -1,0 +1,48 @@
+#login {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(65, 2, 2, 0.801);
+    max-width: 300px;
+    justify-content: center;
+
+    gap: 20px;
+    padding: 30px;
+    border: 1px solid rgb(36, 18, 10);
+    border-radius: 10px;
+    align-items: center;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   
+    align-items: center;       
+    background-color: rgb(247, 233, 215);
+}
+
+
+#login > input {
+    background-color: rgb(247, 233, 215);
+    border: none;
+    padding: 15px;
+    font-size: medium;
+}
+
+#submit {
+    background-color: rgb(247, 233, 215);
+    max-width: 200px;
+    border: none;
+    font-size: small;
+    padding: 10px;
+}
+
+#submit:hover {
+    color: rgb(247, 233, 215);
+    background-color: black;
+}
+
+h1 {
+    color: rgba(65, 2, 2, 0.801);
+}

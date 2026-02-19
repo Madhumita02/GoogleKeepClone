@@ -1,6 +1,6 @@
 import { state } from "./notesData.js";
 
-export function saveNotes() {
-    localStorage.setItem("localstoragenotes", JSON.stringify(state.notes));
-    // console.log("saved to localstorage!");
+export function saveNotes(){
+   const user = JSON.parse(localStorage.getItem("loggedInUser"));
+   localStorage.setItem(`notes_${user.id}`, JSON.stringify(state.notes));
 }

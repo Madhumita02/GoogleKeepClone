@@ -1,6 +1,7 @@
 import {  notesContainer } from "./htmlElements.js";
 import { state } from "./notesData.js";
 import { saveNotes } from "./saveNotes.js";
+import { updateNoteOnServer } from "./serverSync.js";
 import { isTrash } from "./htmlElements.js";
 
 export function new_checkbox() {
@@ -149,6 +150,5 @@ function sortNotes() {
 
     const orderedNotes =pinned.concat(normal);
     state.notes = orderedNotes;
-    saveNotes();
 
 }

@@ -2,14 +2,19 @@ import { editNoteModal, searchNotes, recycleBinHeading, toggleTrash, addNewButto
 import { finalSaveAndCleanUp } from "./editNote.js";
 import { createNote } from "./createNewNotesArray.js";
 import { isTrash } from "./htmlElements.js";
-import { renderNotes } from "./rendernotesui.js";
+import { renderNotes } from "./renderNotesUi.js";
 import { saveNotes } from "./saveNotes.js";
 import { filterSearchNotes } from "./searchNotes.js";
 import { state } from "./notesData.js";
 import { handleNoteClick } from "./handleNoteClick.js";
+import { updateNoteOnServer } from "./serverSync.js";
+
+let listenersAttached = false;
 
 export function eventListeners() {
 
+     if (listenersAttached) return;
+        listenersAttached = true;
     
     let draggedNote = null;
 
@@ -106,7 +111,7 @@ export function eventListeners() {
             const targetCard = e.target.closest(".note_card");
             if(!targetCard || targetCard === draggedNote) return;
 
-            const targetNote = state.notes.find(n => n.id === Number(targetCard.dataset.id) );
+            const targetNote = state.notes.find(n => n.id === targetCard.dataset.id );
 
             if (targetNote?.isPinned) return; 
 
@@ -137,7 +142,7 @@ export function eventListeners() {
             let order = 0;
 
             for (const card of cards) {
-                const note = state.notes.find(n => n.id === Number(card.dataset.id));
+                const note = state.notes.find(n => n.id === card.dataset.id);
 
                 if (!note) continue;
                 if (note.isPinned) continue; 
@@ -145,7 +150,14 @@ export function eventListeners() {
                 note.order = order++;
             }
 
+            
+
             saveNotes();
+            const draggedNoteObj = state.notes.find(
+            n => n.id === noteCard.dataset.id );
+
+
+            updateNoteOnServer(draggedNoteObj);
             renderNotes();
 
         }  
